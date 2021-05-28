@@ -1,5 +1,5 @@
 #!/bin/sh
-cc="@CC@"
+cc="clang"
 libc="@PREFIX@"
 libc_inc="@INCDIR@"
 libc_lib="@LIBDIR@"

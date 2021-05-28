@@ -12,3 +12,10 @@ The following changes are made to musl libc:
         - src/setjmp/LLVM   -> src/setjmp/x86_64
         - src/thread/LLVM   -> src/thread/x86_64
     (based on the LLVM dummy arch idea in the project: https://github.com/SRI-CSL/musllvm)
+
+- Set compiler for musl-clang explicitly to "clang".
+    This avoids the usage of wllvm as compiler in musl-clang.
+    musl-clang will be called by wllvm. If musl-clang also calls wllvm this leads to endless recursion.
+    The changes are in the following files on line 2:
+        - tools/ld.musl-clang.in
+        - tools/musl-clang.in

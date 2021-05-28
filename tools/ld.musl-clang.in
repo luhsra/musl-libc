@@ -1,5 +1,5 @@
 #!/bin/sh
-cc="@CC@"
+cc="clang"
 libc_lib="@LIBDIR@"
 ldso="@LDSO@"
 cleared=
