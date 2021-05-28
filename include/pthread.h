@@ -237,6 +237,10 @@ __REDIR(pthread_timedjoin_np, __pthread_timedjoin_np_time64);
 #endif
 #endif
 
+// Dummy implementation of these syscalls:
+int pthread_attr_setname_np(pthread_attr_t *attr, const char *name);
+int pthread_attr_getname_np(pthread_attr_t *attr, char *buf, size_t len);
+
 #ifdef __cplusplus
 }
 #endif

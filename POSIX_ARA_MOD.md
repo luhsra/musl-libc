@@ -19,3 +19,8 @@ The following changes are made to musl libc:
     The changes are in the following files on line 2:
         - tools/ld.musl-clang.in
         - tools/musl-clang.in
+
+- Created a dummy for pthread_attr_setname_np and pthread_attr_getname_np so that these functions are detectable as syscalls.
+    See the following files:
+        - include/pthread.h line: 240
+        - src/POSIX_ARA_MOD/pthread_attr_setname_np.c
