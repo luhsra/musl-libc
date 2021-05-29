@@ -24,3 +24,7 @@ The following changes are made to musl libc:
     See the following files:
         - include/pthread.h line: 240
         - src/POSIX_ARA_MOD/pthread_attr_setname_np.c
+
+- Removed weak alias  malloc() -> default_malloc()  and replaced it with a simple function that redirects.
+    This allows the SVF to detect malloc() as a syscall.
+    See src/malloc/lite_malloc.c (line 118)
