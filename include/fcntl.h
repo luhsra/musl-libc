@@ -31,7 +31,20 @@ struct flock {
 
 int creat(const char *, mode_t);
 int fcntl(int, int, ...);
-int open(const char *, int, ...);
+
+// Circumvent detection of open() callsite without the optional argument.
+int _ARA_open_syscall_(const char *, int, ...);
+
+/* 
+	Map open() -> _ARA_open_syscall_()
+	
+	open(path, oflag) -> _ARA_open_syscall_(path, oflag, 0)
+	open(path, oflag, mode) -> _ARA_open_syscall_(path, oflag, mode)
+*/
+#define __OPEN_OPT_NOT_GIVEN(path, oflag) _ARA_open_syscall_(path, oflag, 0)
+#define __OPEN_MACRO_OVERLOAD(_1, _2, _3, NAME, ...) NAME
+#define open(...) __OPEN_MACRO_OVERLOAD(__VA_ARGS__, _ARA_open_syscall_, __OPEN_OPT_NOT_GIVEN)(__VA_ARGS__)
+
 int openat(int, const char *, int, ...);
 int posix_fadvise(int, off_t, off_t, int);
 int posix_fallocate(int, off_t, off_t);

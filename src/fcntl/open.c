@@ -2,7 +2,8 @@
 #include <stdarg.h>
 #include "syscall.h"
 
-int open(const char *filename, int flags, ...)
+// open()
+int _ARA_open_syscall_(const char *filename, int flags, ...)
 {
 	mode_t mode = 0;
 
@@ -20,4 +21,4 @@ int open(const char *filename, int flags, ...)
 	return __syscall_ret(fd);
 }
 
-weak_alias(open, open64);
+weak_alias(_ARA_open_syscall_, open64);

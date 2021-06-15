@@ -28,3 +28,9 @@ The following changes are made to musl libc:
 - Removed weak alias  malloc() -> default_malloc()  and replaced it with a simple function that redirects.
     This allows the SVF to detect malloc() as a syscall.
     See src/malloc/lite_malloc.c (line 118)
+
+- Allow detection of open(path, oflag, ...) with its optional argument.
+    ARA can only analyze syscalls with a fixed number of arguments.
+    Variable argument lists are not supported.
+    We circumvent this issue by mapping  open(path, oflag) -> open(path, oflag, 0) [See the macros in include/fcntl.h line 44]
+    The internal name of open() is now _ARA_open_syscall_() [See src/fcntl/open.c]
