@@ -22,7 +22,7 @@ The following changes are made to musl libc:
 
 - Created a dummy for pthread_attr_setname_np and pthread_attr_getname_np so that these functions are detectable as syscalls.
     See the following files:
-        - include/pthread.h line: 240
+        - include/pthread.h (line 240)
         - src/POSIX_ARA_MOD/pthread_attr_setname_np.c
 
 - Removed weak alias  malloc() -> default_malloc()  and replaced it with a simple function that redirects.
@@ -42,3 +42,12 @@ The following changes are made to musl libc:
         - arch/LLVM/atomic_arch.h -> src/POSIX_ARA_MOD/atomic_arch.c
         - arch/LLVM/pthread_arch.h -> src/POSIX_ARA_MOD/pthread_arch.c
         - arch/LLVM/syscall_arch.h -> src/POSIX_ARA_MOD/syscall_arch.c
+
+- sigaction(): Allow the detection of inner fields in the sigaction struct act.
+    It is hard to analyze a struct as argument in ARA.
+    We circumvent this issue with a macro that unpacks the fields in the struct.
+    The internal name of sigaction() is now _ARA_sigaction_syscall_().
+    See the following files:
+        - include/signal.h (starting at line 220)
+        - src/signal/sigaction.c (line 84)
+        - src/POSIX_ARA_MOD/ara_sigaction_handling.c
