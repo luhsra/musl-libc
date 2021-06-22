@@ -35,14 +35,6 @@ The following changes are made to musl libc:
     We circumvent this issue by mapping  open(path, oflag) -> open(path, oflag, 0) [See the macros in include/fcntl.h line 44]
     The internal name of open() is now _ARA_open_syscall_() [See src/fcntl/open.c]
 
-- Created extra translation units for architecture specific x86_64 assembly functions.
-    In default musl libc all of the assembly functions are declared as inline.
-    It is easier to remove or detect the functions if there are located in an extra translation unit.
-    We move the implementation of the functions in the following way:
-        - arch/LLVM/atomic_arch.h -> src/POSIX_ARA_MOD/atomic_arch.c
-        - arch/LLVM/pthread_arch.h -> src/POSIX_ARA_MOD/pthread_arch.c
-        - arch/LLVM/syscall_arch.h -> src/POSIX_ARA_MOD/syscall_arch.c
-
 - sigaction(): Allow the detection of inner fields in the sigaction struct act.
     It is hard to analyze a struct as argument in ARA.
     We circumvent this issue with a macro that unpacks the fields in the struct.
