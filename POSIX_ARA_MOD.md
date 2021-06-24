@@ -43,3 +43,8 @@ The following changes are made to musl libc:
         - include/signal.h (starting at line 220)
         - src/signal/sigaction.c (line 84)
         - src/POSIX_ARA_MOD/ara_sigaction_handling.c
+
+- Created extra translation units to detect or remove some functions with ARA.
+    The following functions are influenced:
+        - __syscall0, __syscall1, ..., __syscall6 [arch/LLVM/syscall_arch.h -> src/POSIX_ARA_MOD/syscall_arch.c]
+        - __wake, __futexwait [src/internal/pthread_impl.h -> src/POSIX_ARA_MOD/futex.c]
