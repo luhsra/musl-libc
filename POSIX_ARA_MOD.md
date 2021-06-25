@@ -35,14 +35,19 @@ The following changes are made to musl libc:
     We circumvent this issue by mapping  open(path, oflag) -> open(path, oflag, 0) [See the macros in include/fcntl.h line 44]
     The internal name of open() is now _ARA_open_syscall_() [See src/fcntl/open.c]
 
-- sigaction(): Allow the detection of inner fields in the sigaction struct act.
+- sigaction() and nanosleep(): Allow the detection of inner fields in some arguments.
     It is hard to analyze a struct as argument in ARA.
     We circumvent this issue with a macro that unpacks the fields in the struct.
     The internal name of sigaction() is now _ARA_sigaction_syscall_().
+    The internal name of nanosleep() is now _ARA_nanosleep_syscall_().
     See the following files:
+        [sigaction]
         - include/signal.h (starting at line 220)
         - src/signal/sigaction.c (line 84)
         - src/POSIX_ARA_MOD/ara_sigaction_handling.c
+        [nanosleep]
+        - include/time.h (starting at line 100)
+        - src/time/nanosleep.c
 
 - Created extra translation units to detect or remove some functions with ARA.
     The following functions are influenced:
