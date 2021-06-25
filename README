@@ -21,3 +21,7 @@ bootstrapping, and Linux distributions built on musl can be found on
 the project website:
 
     http://www.musl-libc.org/
+
+
+POSIX ARA MOD: To see a list of all changes made to musl libc
+see the file POSIX_ARA_MOD_README.txt
