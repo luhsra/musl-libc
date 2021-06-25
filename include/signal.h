@@ -227,7 +227,8 @@ int _ARA_sigaction_syscall_(int _sig,
                             void (*_sa_sigaction)(int, siginfo_t*, void*),
 							struct sigaction *restrict old);
 
-// unpack the sigaction struct of act to allow the detection of inner fields in ARA.
+// Unpack the sigaction struct of act to allow the detection of inner fields in ARA.
+// Perform check for != NULL so that calling sigaction(sig, NULL, old) is not throwing an error.
 #define sigaction(sig, act, old) ((const struct sigaction*)(act) != ((void*)0)) ? \
 		_ARA_sigaction_syscall_(sig, ((const struct sigaction*)(act))->sa_handler, \
 							   ((const struct sigaction*)(act))->sa_mask, \
