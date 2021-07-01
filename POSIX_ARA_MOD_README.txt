@@ -57,3 +57,7 @@ The following changes are made to musl libc:
     The following functions are influenced:
         - __syscall0, __syscall1, ..., __syscall6 [arch/LLVM/syscall_arch.h -> src/POSIX_ARA_MOD/syscall_arch.c]
         - __wake, __futexwait [src/internal/pthread_impl.h -> src/POSIX_ARA_MOD/futex.c]
+
+- Removed {sa_handler, sa_sigaction} union in sigaction struct and added the fields in the ordinary way.
+    To save a byte in the sigaction struct the sa_handler and sa_sigaction fields are implemented with a union.
+    We do not want this because we are analysing the sigaction struct in full.
