@@ -213,10 +213,10 @@ int sigismember(const sigset_t *, int);
 
 int sigprocmask(int, const sigset_t *__restrict, sigset_t *__restrict);
 int sigsuspend(const sigset_t *);
-int _orig_musl_sigaction(int, const struct sigaction *__restrict, struct sigaction *__restrict); // sigaction()
+int sigaction(int, const struct sigaction *__restrict, struct sigaction *__restrict);
 
 // The function we want to detect within ARA. (sigaction)
-int _ARA_sigaction_syscall_(int _sig, 
+int ARA_sigaction_syscall_(int _sig, 
                             void (*_sa_handler)(int),
                             sigset_t _sa_mask,
                             int _sa_flags,
@@ -225,12 +225,12 @@ int _ARA_sigaction_syscall_(int _sig,
 
 // Unpack the sigaction struct of act to allow the detection of inner fields in ARA.
 // Perform check for != NULL so that calling sigaction(sig, NULL, old) is not throwing an error.
-#define sigaction(sig, act, old) ((const struct sigaction*)(act) != ((void*)0)) ? \
-		_ARA_sigaction_syscall_(sig, ((const struct sigaction*)(act))->sa_handler, \
+#define sigaction(sig, act, old) (((const struct sigaction*)(act) != ((void*)0)) ? \
+		ARA_sigaction_syscall_((sig), ((const struct sigaction*)(act))->sa_handler, \
 							   ((const struct sigaction*)(act))->sa_mask, \
 							   ((const struct sigaction*)(act))->sa_flags, \
-							   ((const struct sigaction*)(act))->sa_sigaction, old) \
-		: _orig_musl_sigaction(sig, act, old)
+							   ((const struct sigaction*)(act))->sa_sigaction, (old)) \
+		: (sigaction)((sig), (act), (old)))
 
 int sigpending(sigset_t *);
 int sigwait(const sigset_t *__restrict, int *__restrict);

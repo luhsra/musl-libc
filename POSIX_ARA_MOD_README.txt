@@ -22,17 +22,16 @@ The following changes are made to musl libc:
     This allows the SVF to detect malloc() as a syscall.
     See src/malloc/lite_malloc.c (line 118)
 
-- sigaction(), nanosleep() and pthread_attr_setschedparam(): Allow the detection of inner fields in some arguments.
+- sigaction(), nanosleep() and pthread_attr_setschedparam(): Allow the detection of inner struct fields.
     It is hard to analyze a struct as argument in ARA.
     We circumvent this issue with a macro that unpacks the fields in the struct.
-    The internal name of sigaction() is now _ARA_sigaction_syscall_().
-    The internal name of nanosleep() is now _ARA_nanosleep_syscall_().
-    The internal name of pthread_attr_setschedparam() is now _ARA_pthread_attr_setschedparam_syscall_().
+    The internal name of sigaction() is now ARA_sigaction_syscall_().
+    The internal name of nanosleep() is now ARA_nanosleep_syscall_().
+    The internal name of pthread_attr_setschedparam() is now ARA_pthread_attr_setschedparam_syscall_().
     See the following files:
+        - src/POSIX_ARA_MOD/struct_field_detection.c
         [sigaction]
         - include/signal.h (starting at line 220)
-        - src/signal/sigaction.c (line 84)
-        - src/POSIX_ARA_MOD/ara_sigaction_handling.c
         [nanosleep]
         - include/time.h (line 100)
         - src/time/nanosleep.c

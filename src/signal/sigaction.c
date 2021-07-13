@@ -81,4 +81,4 @@ int __sigaction(int sig, const struct sigaction *restrict sa, struct sigaction *
 	return r;
 }
 
-weak_alias(__sigaction, _orig_musl_sigaction); // weak_alias(__sigaction, sigaction);
+weak_alias(__sigaction, sigaction);

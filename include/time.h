@@ -97,10 +97,11 @@ struct itimerspec {
 
 #define TIMER_ABSTIME 1
 
-int _ARA_nanosleep_syscall_ (time_t tv_sec, long tv_nsec, struct timespec *rem);
+int nanosleep (const struct timespec *, struct timespec *);
+int ARA_nanosleep_syscall_ (time_t tv_sec, long tv_nsec, struct timespec *rem);
 
 // req is explicitly non-NULL so we do not need to check.
-#define nanosleep(req, rem) _ARA_nanosleep_syscall_((req)->tv_sec, (req)->tv_nsec, rem)
+#define nanosleep(req, rem) ARA_nanosleep_syscall_(((const struct timespec *)(req))->tv_sec, ((const struct timespec *)(req))->tv_nsec, (rem))
 
 int clock_getres (clockid_t, struct timespec *);
 int clock_gettime (clockid_t, struct timespec *);

@@ -162,12 +162,12 @@ int pthread_attr_setscope(pthread_attr_t *, int);
 int pthread_attr_getschedpolicy(const pthread_attr_t *__restrict, int *__restrict);
 int pthread_attr_setschedpolicy(pthread_attr_t *, int);
 int pthread_attr_getschedparam(const pthread_attr_t *__restrict, struct sched_param *__restrict);
+int pthread_attr_setschedparam(pthread_attr_t *__restrict, const struct sched_param *__restrict);
 
-int _ARA_pthread_attr_setschedparam_syscall_(pthread_attr_t *__restrict, const int);
-//int pthread_attr_setschedparam(pthread_attr_t *__restrict, const struct sched_param *__restrict);
+int ARA_pthread_attr_setschedparam_syscall_(pthread_attr_t *__restrict, const int);
 
 // param is explicitly non-NULL so we do not need to check.
-#define pthread_attr_setschedparam(attr, param) _ARA_pthread_attr_setschedparam_syscall_(attr, (param)->sched_priority)
+#define pthread_attr_setschedparam(attr, param) ARA_pthread_attr_setschedparam_syscall_((attr), ((const struct sched_param*)(param))->sched_priority)
 
 int pthread_attr_getinheritsched(const pthread_attr_t *__restrict, int *__restrict);
 int pthread_attr_setinheritsched(pthread_attr_t *, int);
