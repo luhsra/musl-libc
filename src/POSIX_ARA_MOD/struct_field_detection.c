@@ -4,6 +4,7 @@
 #include <time.h>
 #include <pthread.h>
 #include <sched.h>
+#include <unistd.h>
 
 
 // The function we want to detect within ARA. (sigaction)
@@ -33,4 +34,10 @@ int ARA_nanosleep_syscall_(time_t tv_sec, long tv_nsec, struct timespec *rem) {
 int ARA_pthread_attr_setschedparam_syscall_(pthread_attr_t *restrict a, const int sched_priority) {
     struct sched_param param = {.sched_priority = sched_priority};
  	return (pthread_attr_setschedparam)(a, &param);
+}
+
+// pipe()
+int ARA_pipe_syscall_(int *fildes_read, int *fildes_write) {
+    (void)fildes_write;
+    return (pipe)(fildes_read);
 }
