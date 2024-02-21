@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 usage () {
 cat <<EOF
@@ -51,6 +51,8 @@ exit 0
 }
 
 # Helper functions
+
+: "${OBJ:=obj}"
 
 quote () {
 tr '\n' ' ' <<EOF | grep '^[-[:alnum:]_=,./:]* $' >/dev/null 2>&1 && { echo "$1" ; return 0 ; }
@@ -302,11 +304,11 @@ fi
 fi
 
 if test "$gcc_wrapper" = yes ; then
-tools="$tools obj/musl-gcc"
+tools="$tools ${OBJ}/musl-gcc"
 tool_libs="$tool_libs lib/musl-gcc.specs"
 fi
 if test "$clang_wrapper" = yes ; then
-tools="$tools obj/musl-clang obj/ld.musl-clang"
+tools="$tools ${OBJ}/musl-clang ${OBJ}/ld.musl-clang"
 fi
 
 #
@@ -767,7 +769,7 @@ printf "creating config.mak... "
 cmdline=$(quote "$0")
 for i ; do cmdline="$cmdline $(quote "$i")" ; done
 
-exec 3>&1 1>config.mak
+exec 3>&1 1>${OBJ}/config.mak
 
 
 cat << EOF
