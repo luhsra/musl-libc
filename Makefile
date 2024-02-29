@@ -179,14 +179,14 @@ lib/%.o: $(OBJ)/crt/$(ARCH)/%.o
 lib/%.o: $(OBJ)/crt/%.o
 	cp $< $@
 
-lib/musl-gcc.specs: $(srcdir)/tools/musl-gcc.specs.sh config.mak
+lib/musl-gcc.specs: $(srcdir)/tools/musl-gcc.specs.sh $(OBJ)/config.mak
 	sh $< "$(includedir)" "$(libdir)" "$(LDSO_PATHNAME)" > $@
 
-$(OBJ)/musl-gcc: config.mak
+$(OBJ)/musl-gcc: $(OBJ)/config.mak
 	printf '#!/bin/sh\nexec "$${REALGCC:-$(WRAPCC_GCC)}" "$$@" -specs "%s/musl-gcc.specs"\n' "$(libdir)" > $@
 	chmod +x $@
 
-$(OBJ)/%-clang: $(srcdir)/tools/%-clang.in config.mak
+$(OBJ)/%-clang: $(srcdir)/tools/%-clang.in $(OBJ)/config.mak
 	sed -e 's!@CC@!$(WRAPCC_CLANG)!g' -e 's!@PREFIX@!$(prefix)!g' -e 's!@INCDIR@!$(includedir)!g' -e 's!@LIBDIR@!$(libdir)!g' -e 's!@LDSO@!$(LDSO_PATHNAME)!g' $< > $@
 	chmod +x $@
 
