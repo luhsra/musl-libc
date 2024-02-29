@@ -19,6 +19,8 @@ gllvm_meson = subproject('gllvm-meson')
 gclang = gllvm_meson.get_variable('gclang')
 get_bc = gllvm_meson.get_variable('get_bc')
 
+build_tools_env = gllvm_meson.get_variable('build_tools_env')
+
 make = find_program('make')
 
 py3_mod = import('python')
@@ -26,17 +28,18 @@ py3_inst = py3_mod.find_installation('python3')
 
 musl_build = custom_target('musl-bc',
   output: ['musl-1.2.2.bc', 'musl-install'],
+  env: build_tools_env,
   command: [
     py3_inst, files('make_musl_bitcode.py'),
-    '--make-builddir', meson.current_build_dir() / 'musl_build',
-    '--musl-src-dir', musl_source,
+    '--build-dir', meson.current_build_dir() / 'musl_build',
+    '--src-dir', musl_source,
     '--llvm-bindir', llvm_bindir,
     '--make-program', make.full_path(),
     '--get-bc-program', get_bc.full_path(),
     '--llvm-ld-program', llvm_ld.full_path(),
     '--llvm-objcopy-program', llvm_objcopy.full_path(),
-    '--bc-output', '@OUTPUT0@',
-    '--musl-install-dir', '@OUTPUT1@',
+    '--output', '@OUTPUT0@',
+    '--install-dir', '@OUTPUT1@',
     '--gclang-program', gclang.full_path(),
   ],
 )
