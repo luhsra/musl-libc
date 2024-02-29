@@ -2,7 +2,7 @@ project('musl-libc', 'c', 'cpp',
   version : '1.2.2',
   default_options : ['warning_level=3'])
 
-musl_dir = meson.current_source_dir()
+musl_source = meson.current_source_dir()
 
 llvm_version = ['>=14', '<15']
 llvm_dep = dependency('llvm', method: 'config-tool', version: llvm_version, include_type: 'system')
@@ -24,15 +24,12 @@ make = find_program('make')
 py3_mod = import('python')
 py3_inst = py3_mod.find_installation('python3')
 
-# output: [musl_dir / 'musl-1.2.2.bc',
-#   ],
-
 musl_build = custom_target('musl-bc',
   output: ['musl-1.2.2.bc', 'musl-install'],
   command: [
     py3_inst, files('make_musl_bitcode.py'),
     '--make-builddir', meson.current_build_dir() / 'musl_build',
-    '--musl-src-dir', musl_dir,
+    '--musl-src-dir', musl_source,
     '--llvm-bindir', llvm_bindir,
     '--make-program', make.full_path(),
     '--get-bc-program', get_bc.full_path(),
@@ -59,3 +56,5 @@ musl_ll = custom_target('musl-ll',
   input: [musl_bc, llvm_builtins],
   command: llvm_link_cmd,
 )
+musl_include = {'include': musl_dir.full_path() / 'include', 'dep': musl_build}
+musl_clang = {'bin': musl_dir.full_path() / 'bin' / 'musl-clang', 'dep': musl_build}
