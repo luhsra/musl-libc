@@ -1,0 +1,12 @@
+[
+	{
+		"source_file": "src/stdio/__toread.c",
+		"line_number": 6,
+		"call_targets": ["mwrite"]
+	},
+	{
+		"source_file": "src/stdio/__uflow.c",
+		"line_number": 9,
+		"call_targets": ["mread"]
+	}
+]

@@ -61,3 +61,5 @@ musl_ll = custom_target('musl-ll',
 )
 musl_include = {'include': musl_dir.full_path() / 'include', 'dep': musl_build}
 musl_clang = {'bin': musl_dir.full_path() / 'bin' / 'musl-clang', 'dep': musl_build}
+
+fp_corrections = files('function_pointer_translation_map.json')[0]
